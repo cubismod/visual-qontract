@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { chunk } from 'lodash';
-import { CardGrid, Row, Col, Card, CardHeading, CardBody, CardFooter, CardTitle } from 'patternfly-react';
+import { Gallery, Grid, GridItem, Card, CardHeader, CardBody, CardFooter, CardTitle } from '@patternfly/react-core';
 import { sortByName } from '../../components/Utils';
 
 function AWSGroups({ awsgroups }) {
@@ -9,13 +9,13 @@ function AWSGroups({ awsgroups }) {
   const cardWidth = 4;
   const cardsPerRow = 3;
   const rows = chunk(sortByName(awsgroups), cardsPerRow).map(c => (
-    <Row key={c[0].path}>
+    <Grid key={c[0].path} hasGutter>
       {c.map(s => (
-        <Col xs={cardWidth} key={s.path}>
-          <Card accented>
-            <CardHeading>
+        <GridItem span={cardWidth} key={s.path}>
+          <Card>
+            <CardHeader>
               <CardTitle>{s.name}</CardTitle>
-            </CardHeading>
+            </CardHeader>
             <CardBody>
               <p>{s.description}</p>
               <p> Account: {s.account.name} </p>
@@ -33,12 +33,12 @@ function AWSGroups({ awsgroups }) {
               </p>
             </CardFooter>
           </Card>
-        </Col>
+        </GridItem>
       ))}
-    </Row>
+    </Grid>
   ));
 
-  return <CardGrid matchHeight>{rows}</CardGrid>;
+  return <Gallery hasGutter>{rows}</Gallery>;
 }
 
 export default AWSGroups;

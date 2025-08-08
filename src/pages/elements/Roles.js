@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'patternfly-react';
+// Table formatters are no longer needed with new PatternFly
 import { sortByName } from '../../components/Utils';
 import TableSearch from '../../components/TableSearch';
 
 function Roles({ roles }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const options = ['Name', 'Description'];
   const [selected, changeSelected] = useState(options[0]);
   const [filterText, changeFilterText] = useState('');

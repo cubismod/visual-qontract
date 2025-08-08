@@ -6,14 +6,10 @@ $img-path: './img/';
 $icon-font-path: './fonts/';
 
 /**
-  Patternfly Sass
+  PatternFly 5 Styles
 */
-@import 'patternfly';
-
-/**
-  Patternfly React Specific Sass Extensions
-*/
-@import 'patternfly-react';
+// PatternFly 5 styles are automatically imported with components
+// If needed, import specific styles: @import '~@patternfly/react-core/dist/styles/base.css';
 
 /**
   Application Overrides

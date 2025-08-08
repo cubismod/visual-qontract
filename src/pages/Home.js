@@ -1,23 +1,18 @@
 import * as React from 'react';
-import { Grid } from 'patternfly-react';
+import { Grid, GridItem } from '@patternfly/react-core';
 
 import Definition from '../components/Definition';
 
 function HomePage() {
   return (
-    <Grid fluid className="container-pf-nav-pf-vertical">
-      <Grid.Row>
-        <Grid.Col xs={12}>
+    <Grid hasGutter className="container-pf-nav-pf-vertical">
+      <GridItem span={12}>
           <div className="page-header">
             <h1>Overview</h1>
           </div>
-        </Grid.Col>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Col xs={12}>This web application is the visual representation of the App-Interface.</Grid.Col>
-      </Grid.Row>
-      <Grid.Row>
-        <Grid.Col xs={12}>
+      </GridItem>
+      <GridItem span={12}>This web application is the visual representation of the App-Interface.</GridItem>
+      <GridItem span={12}>
           <Definition
             items={[
               [
@@ -52,8 +47,7 @@ function HomePage() {
               ]
             ]}
           />
-        </Grid.Col>
-      </Grid.Row>
+      </GridItem>
     </Grid>
   );
 }

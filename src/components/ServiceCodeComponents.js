@@ -1,52 +1,31 @@
 import React from 'react';
-import { Table } from 'patternfly-react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { sortByName } from './Utils';
 
 function CodeComponents({ components }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const linkFormat = url => value => <a href={`${url || ''}${value}`}>{value}</a>;
 
   return (
-    <Table.PfProvider
-      striped
-      bordered
-      columns={[
-        {
-          header: {
-            label: 'Name',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'name'
-        },
-        {
-          header: {
-            label: 'Resource',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'resource'
-        },
-        {
-          header: {
-            label: 'URL',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [linkFormat(), cellFormat]
-          },
-          property: 'url'
-        }
-      ]}
-    >
-      <Table.Header />
-      <Table.Body rows={sortByName(components)} rowKey="name" />
-    </Table.PfProvider>
+    <Table aria-label="Code components table" variant="compact">
+      <Thead>
+        <Tr>
+          <Th>Name</Th>
+          <Th>Resource</Th>
+          <Th>URL</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {sortByName(components).map((component, index) => (
+          <Tr key={component.name || index}>
+            <Td>{component.name}</Td>
+            <Td>{component.resource}</Td>
+            <Td><a href={component.url}>{component.url}</a></Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 

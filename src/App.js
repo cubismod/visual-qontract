@@ -5,7 +5,18 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import { IntrospectionFragmentMatcher, InMemoryCache } from 'apollo-cache-inmemory';
-import { VerticalNav, VerticalNavItem, VerticalNavSecondaryItem, VerticalNavMasthead } from 'patternfly-react';
+import { 
+  Page, 
+  Nav, 
+  NavItem, 
+  NavGroup, 
+  Masthead, 
+  MastheadToggle, 
+  MastheadMain, 
+  MastheadBrand, 
+  PageSidebar, 
+  PageSidebarBody 
+} from '@patternfly/react-core';
 import { routes } from './routes';
 import './App.css';
 import introspectionQueryResultData from './fragmentTypes.json';
@@ -62,38 +73,61 @@ class App extends React.Component {
 
   render() {
     const { location } = this.props;
-    const vertNavItems = this.menu.map(item => {
+    
+    const navItems = this.menu.map(item => {
       const active = location.pathname === item.to;
       const subItemActive = item.subItems && item.subItems.some(itemB => location.pathname === item.to);
+      
+      if (item.subItems) {
+        return (
+          <NavGroup key={item.to} title={item.title}>
+            {item.subItems.map(secondaryItem => (
+              <NavItem
+                key={secondaryItem.to}
+                isActive={secondaryItem.to === location.pathname}
+                onClick={() => this.navigateTo(secondaryItem.to)}
+              >
+                {secondaryItem.title}
+              </NavItem>
+            ))}
+          </NavGroup>
+        );
+      }
+      
       return (
-        <VerticalNavItem
+        <NavItem
           key={item.to}
-          title={item.title}
-          iconClass={item.iconClass}
-          active={active || subItemActive}
+          isActive={active}
           onClick={() => this.navigateTo(item.to)}
         >
-          {item.subItems &&
-            item.subItems.map(secondaryItem => (
-              <VerticalNavSecondaryItem
-                key={secondaryItem.to}
-                title={secondaryItem.title}
-                iconClass={secondaryItem.iconClass}
-                active={secondaryItem.to === location.pathname}
-                onClick={() => this.navigateTo(secondaryItem.to)}
-              />
-            ))}
-        </VerticalNavItem>
+          {item.title}
+        </NavItem>
       );
     });
 
+    const masthead = (
+      <Masthead>
+        <MastheadMain>
+          <MastheadBrand>APP-INTERFACE</MastheadBrand>
+        </MastheadMain>
+      </Masthead>
+    );
+
+    const sidebar = (
+      <PageSidebar>
+        <PageSidebarBody>
+          <Nav>
+            {navItems}
+          </Nav>
+        </PageSidebarBody>
+      </PageSidebar>
+    );
+
     return (
       <ApolloProvider client={client}>
-        <VerticalNav persistentSecondary={false}>
-          <VerticalNavMasthead title="APP-INTERFACE" />
-          {vertNavItems}
-        </VerticalNav>
-        {this.renderContent()}
+        <Page masthead={masthead} sidebar={sidebar}>
+          {this.renderContent()}
+        </Page>
       </ApolloProvider>
     );
   }

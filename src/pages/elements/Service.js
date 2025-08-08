@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
-import { Label, Table } from 'patternfly-react';
+import { Label } from '@patternfly/react-core';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { Link } from 'react-router-dom';
 import Definition from '../../components/Definition';
 import NonEmptyDefinition from '../../components/NonEmptyDefinition';
@@ -13,8 +14,8 @@ import Namespaces from './Namespaces';
 import Reports from './Reports';
 import Services from './Services';
 
-const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+const headerFormat = value => value;
+const cellFormat = value => value;
 const linkFormat = url => value => (
   <a href={`${url || ''}${value}`} target="_blank" rel="noopener noreferrer">
     {value}
@@ -260,7 +261,7 @@ function Service({ service, reports, saas_files_v2, scorecards }) {
             },
             cell: {
               formatters: [
-                booleanFormat(<Label bsStyle="success">Public</Label>, <Label bsStyle="danger">Private</Label>),
+                booleanFormat(<Label color="green">Public</Label>, <Label color="red">Private</Label>),
                 cellFormat
               ]
             },

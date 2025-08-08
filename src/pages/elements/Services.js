@@ -1,12 +1,12 @@
 import React from 'react';
-import { Table } from 'patternfly-react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { Link } from 'react-router-dom';
 import { sortByName } from '../../components/Utils';
 import OnboardingStatus from '../../components/OnboardingStatus';
 
 function Services({ services, omitParentApp }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const onboardingStatusFormat = value => <OnboardingStatus state={value} />;
 
   services = sortByName(services.slice()).map(s => {
@@ -96,10 +96,31 @@ function Services({ services, omitParentApp }) {
   }
 
   return (
-    <Table.PfProvider striped bordered columns={columns}>
-      <Table.Header />
-      <Table.Body rows={sortByName(services)} rowKey="name" />
-    </Table.PfProvider>
+    <Table aria-label="Services table" variant="compact">
+      <Thead>
+        <Tr>
+          {columns.map((column, index) => (
+            <Th key={index}>{column.header.label}</Th>
+          ))}
+        </Tr>
+      </Thead>
+      <Tbody>
+        {sortByName(services).map((service, rowIndex) => (
+          <Tr key={service.name || rowIndex}>
+            {columns.map((column, colIndex) => (
+              <Td key={colIndex}>
+                {column.cell && column.cell.formatters
+                  ? column.cell.formatters.reduce(
+                      (value, formatter) => formatter(value),
+                      service[column.property]
+                    )
+                  : service[column.property]}
+              </Td>
+            ))}
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 

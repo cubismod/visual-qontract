@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup } from 'patternfly-react';
+import { Button } from '@patternfly/react-core';
 
 const Pagination = ({ itemCount, perPage, page, onSetPage, onPerPageSelect }) => {
   const totalPages = Math.ceil(itemCount / perPage);
@@ -12,12 +12,12 @@ const Pagination = ({ itemCount, perPage, page, onSetPage, onPerPageSelect }) =>
 
   return (
     <div className="pf-c-pagination">
-      <ButtonGroup>
+      <div className="pf-c-button-group">
         <Button onClick={() => handlePageChange(1)}>First</Button>
         <Button onClick={() => handlePageChange(page - 1)}>Previous</Button>
         <Button onClick={() => handlePageChange(page + 1)}>Next</Button>
         <Button onClick={() => handlePageChange(totalPages)}>Last</Button>
-      </ButtonGroup>
+      </div>
       <span>
         Page {page} of {totalPages}
       </span>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'patternfly-react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { sortByName } from '../../components/Utils';
 
 function AppSREClustersTable({ clusters, apps }) {
   const appByName = appName => apps.find(a => a.name === appName);
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const workloadsFormat = workloadsList => (
     <ul>
       {workloadsList.map(w => (
@@ -22,187 +22,87 @@ function AppSREClustersTable({ clusters, apps }) {
     ));
 
   return (
-    <Table.PfProvider
-      striped
-      bordered
-      columns={[
-        {
-          header: {
-            label: 'Name',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [
-              value => (
-                <>
-                  <Link
-                    to={{
-                      pathname: '/clusters',
-                      hash: value[1]
-                    }}
-                  >
-                    {value[0]}
-                  </Link>
-                  &nbsp;&nbsp;
-                  <a href={value[2]} target="_blank" rel="noopener noreferrer">
-                    <i className="fa fa-desktop" />
-                  </a>
-                </>
-              ),
-              cellFormat
-            ]
-          },
-          property: 'name_path'
-        },
-        {
-          header: {
-            label: 'Description',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'description'
-        },
-        {
-          header: {
-            label: 'Services',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [appsFormat, cellFormat]
-          },
-          property: 'apps'
-        },
-        {
-          header: {
-            label: 'Version',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'version'
-        },
-        {
-          header: {
-            label: 'Hypershift',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'hypershift'
-        },
-        {
-          header: {
-            label: 'Channel',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'channel'
-        },
-        {
-          header: {
-            label: 'Upgrade workloads',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [workloadsFormat, cellFormat]
-          },
-          property: 'upgrade_workloads'
-        },
-        {
-          header: {
-            label: 'Upgrade schedule',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'upgrade_schedule'
-        },
-        {
-          header: {
-            label: 'Upgrade soak days',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'upgrade_soak_days'
-        },
-        {
-          header: {
-            label: 'ID',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'id'
-        }
-      ]}
-    >
-      <Table.Header />
-      <Table.Body rows={sortByName(clusters)} rowKey="name" />
-    </Table.PfProvider>
+    <Table aria-label="AppSRE clusters table" variant="compact">
+      <Thead>
+        <Tr>
+          <Th>Name</Th>
+          <Th>Description</Th>
+          <Th>Services</Th>
+          <Th>Version</Th>
+          <Th>Hypershift</Th>
+          <Th>Channel</Th>
+          <Th>Upgrade workloads</Th>
+          <Th>Upgrade schedule</Th>
+          <Th>Upgrade soak days</Th>
+          <Th>ID</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {sortByName(clusters).map((cluster, index) => (
+          <Tr key={cluster.name || index}>
+            <Td>
+              <Link
+                to={{
+                  pathname: '/clusters',
+                  hash: cluster.path
+                }}
+              >
+                {cluster.name}
+              </Link>
+              &nbsp;&nbsp;
+              <a href={cluster.consoleUrl} target="_blank" rel="noopener noreferrer">
+                <i className="fa fa-desktop" />
+              </a>
+            </Td>
+            <Td>{cluster.description}</Td>
+            <Td>{appsFormat(cluster.apps)}</Td>
+            <Td>{cluster.version}</Td>
+            <Td>{cluster.hypershift}</Td>
+            <Td>{cluster.channel}</Td>
+            <Td>{workloadsFormat(cluster.upgrade_workloads)}</Td>
+            <Td>{cluster.upgrade_schedule}</Td>
+            <Td>{cluster.upgrade_soak_days}</Td>
+            <Td>{cluster.id}</Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 
 function ExternalClustersTable({ clusters }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   return (
-    <Table.PfProvider
-      striped
-      bordered
-      columns={[
-        {
-          header: {
-            label: 'Name',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [
-              value => (
-                <>
-                  <Link
-                    to={{
-                      pathname: '/clusters',
-                      hash: value[1]
-                    }}
-                  >
-                    {value[0]}
-                  </Link>
-                  &nbsp;&nbsp;
-                  <a href={value[2]}>
-                    <i className="fa fa-desktop" />
-                  </a>
-                </>
-              ),
-              cellFormat
-            ]
-          },
-          property: 'name_path'
-        },
-        {
-          header: {
-            label: 'Description',
-            formatters: [headerFormat]
-          },
-          cell: {
-            formatters: [cellFormat]
-          },
-          property: 'description'
-        }
-      ]}
-    >
-      <Table.Header />
-      <Table.Body rows={sortByName(clusters)} rowKey="name" />
-    </Table.PfProvider>
+    <Table aria-label="External clusters table" variant="compact">
+      <Thead>
+        <Tr>
+          <Th>Name</Th>
+          <Th>Description</Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {sortByName(clusters).map((cluster, index) => (
+          <Tr key={cluster.name || index}>
+            <Td>
+              <Link
+                to={{
+                  pathname: '/clusters',
+                  hash: cluster.path
+                }}
+              >
+                {cluster.name}
+              </Link>
+              &nbsp;&nbsp;
+              <a href={cluster.consoleUrl}>
+                <i className="fa fa-desktop" />
+              </a>
+            </Td>
+            <Td>{cluster.description}</Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 

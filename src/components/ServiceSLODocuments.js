@@ -1,10 +1,10 @@
 import React from 'react';
-import { Table } from 'patternfly-react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { sortByName } from './Utils';
 
 function ServiceSLODocuments({ documents }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const linkFormat = url => value => <a href={`${url || ''}${value}`}>{value}</a>;
   const elements = [];
 
@@ -12,75 +12,30 @@ function ServiceSLODocuments({ documents }) {
     const element = (
       <div>
         <h5>{document.name}</h5>
-        <Table.PfProvider
-          striped
-          bordered
-          columns={[
-            {
-              header: {
-                label: 'Name',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [cellFormat]
-              },
-              property: 'name'
-            },
-            {
-              header: {
-                label: 'SLI Type',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [cellFormat]
-              },
-              property: 'SLIType'
-            },
-            {
-              header: {
-                label: 'SLI Specification',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [cellFormat]
-              },
-              property: 'SLISpecification'
-            },
-            {
-              header: {
-                label: 'SLO Details',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [linkFormat(), cellFormat]
-              },
-              property: 'SLODetails'
-            },
-            {
-              header: {
-                label: 'SLO Target',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [cellFormat]
-              },
-              property: 'SLOTarget'
-            },
-            {
-              header: {
-                label: 'Dashboard',
-                formatters: [headerFormat]
-              },
-              cell: {
-                formatters: [linkFormat(), cellFormat]
-              },
-              property: 'dashboard'
-            }
-          ]}
-        >
-          <Table.Header />
-          <Table.Body rows={sortByName(document.slos)} rowKey="name" />
-        </Table.PfProvider>
+        <Table aria-label={`SLO table for ${document.name}`} variant="compact">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>SLI Type</Th>
+              <Th>SLI Specification</Th>
+              <Th>SLO Details</Th>
+              <Th>SLO Target</Th>
+              <Th>Dashboard</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {sortByName(document.slos).map((slo, index) => (
+              <Tr key={slo.name || index}>
+                <Td>{slo.name}</Td>
+                <Td>{slo.SLIType}</Td>
+                <Td>{slo.SLISpecification}</Td>
+                <Td><a href={slo.SLODetails}>{slo.SLODetails}</a></Td>
+                <Td>{slo.SLOTarget}</Td>
+                <Td><a href={slo.dashboard}>{slo.dashboard}</a></Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
       </div>
     );
     elements.push(element);

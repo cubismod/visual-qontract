@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Col, Row, Table } from 'patternfly-react';
+import { Grid, GridItem } from '@patternfly/react-core';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import Pagination from './Pagination';
 import SearchBar from './SearchBar';
 
@@ -10,8 +11,8 @@ function PaginatedTableSearch({ filterText, changeFilterText, changeSelected, op
 
   return (
     <React.Fragment>
-      <Row>
-        <Col md={8}>
+      <Grid hasGutter>
+        <GridItem span={8}>
           <SearchBar
             filterText={filterText}
             handleFilterTextChange={changeFilterText}
@@ -19,8 +20,8 @@ function PaginatedTableSearch({ filterText, changeFilterText, changeSelected, op
             options={options}
             selected={selected}
           />
-        </Col>
-        <Col md={4}>
+        </GridItem>
+        <GridItem span={4}>
           <Pagination
             itemCount={rows.length}
             perPage={perPage}
@@ -28,13 +29,34 @@ function PaginatedTableSearch({ filterText, changeFilterText, changeSelected, op
             onSetPage={setPage}
             onPerPageSelect={setPerPage}
           />
-        </Col>
-      </Row>
+        </GridItem>
+      </Grid>
 
-      <Table.PfProvider striped bordered columns={columns}>
-        <Table.Header />
-        <Table.Body rows={paginatedRows} rowKey="path" />
-      </Table.PfProvider>
+      <Table aria-label="Paginated search results table" variant="compact">
+        <Thead>
+          <Tr>
+            {columns.map((column, index) => (
+              <Th key={index}>{column.header.label}</Th>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {paginatedRows.map((row, rowIndex) => (
+            <Tr key={rowIndex}>
+              {columns.map((column, colIndex) => (
+                <Td key={colIndex}>
+                  {column.cell && column.cell.formatters
+                    ? column.cell.formatters.reduce(
+                        (value, formatter) => formatter(value),
+                        row[column.property]
+                      )
+                    : row[column.property]}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     </React.Fragment>
   );
 }

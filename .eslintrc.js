@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  extends: ['plugin:patternfly-react/recommended'],
+  extends: ['react-app', 'react-app/jest'],
   rules: {
     'import/no-extraneous-dependencies': 'off',
     'no-console': 'off',

@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'patternfly-react';
+// Table formatters are no longer needed with new PatternFly
 import PaginatedTableSearch from '../../components/PaginatedTableSearch';
 import { highlightText, parseMarkdownLinks } from '../../components/Utils';
 
 function AppChangelogs({ latestAppChangelogs }) {
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const [filterText, changeFilterText] = useState('');
 
   const processedChangelogs = latestAppChangelogs.slice().map(c => {

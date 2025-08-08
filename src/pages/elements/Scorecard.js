@@ -1,11 +1,12 @@
 import React from 'react';
-import { Table, ProgressBar } from 'patternfly-react';
-import ReactMarkdown from 'react-markdown/react-markdown.min';
+import { Progress } from '@patternfly/react-core';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
+import ReactMarkdown from 'react-markdown';
 import ScorecardData from '../../components/ScorecardData';
 import Definition from '../../components/Definition';
 
-const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+const headerFormat = value => value;
+const cellFormat = value => value;
 const mdFormat = value => <ReactMarkdown>{value}</ReactMarkdown>;
 
 const linkFormat = e => (
@@ -41,7 +42,7 @@ function ScoreTable({ data }) {
           <tr key={m[0]}>
             <td style={{ width: '40%' }}>{m[0]}</td>
             <td>
-              <ProgressBarScore now={m[1]} />
+              <Progress value={m[1]} />
             </td>
           </tr>
         ))}
@@ -103,7 +104,7 @@ function ProgressBarScore({ now }) {
   }
 
   return (
-    <ProgressBar
+    <Progress
       active={false}
       bsClass="progress-bar"
       bsStyle={bsStyle}

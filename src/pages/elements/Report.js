@@ -1,13 +1,13 @@
 import React from 'react';
-import { Table } from 'patternfly-react';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import { Link } from 'react-router-dom';
 import Definition from '../../components/Definition';
 import GrafanaContainerVulnerabilities from '../../components/GrafanaContainerVulnerabilities';
 
 const yaml = require('js-yaml');
 
-const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+const headerFormat = value => value;
+const cellFormat = value => value;
 const linkFormat = url => value => (
   <a href={`${url || ''}${value}`} target="_blank" rel="noopener noreferrer">
     {value}

@@ -1,11 +1,11 @@
 import React from 'react';
-import { CardGrid } from 'patternfly-react';
+import { Gallery } from '@patternfly/react-core';
 import SearchBar from './SearchBar';
 
 function GridSearch({ data, filterText, changeFilterText, changeSelected, options, selected }) {
   return (
     <React.Fragment>
-      <CardGrid matchHeight>
+      <Gallery hasGutter>
         <SearchBar
           filterText={filterText}
           handleFilterTextChange={changeFilterText}
@@ -14,7 +14,7 @@ function GridSearch({ data, filterText, changeFilterText, changeSelected, option
           selected={selected}
         />
         {data}
-      </CardGrid>
+      </Gallery>
     </React.Fragment>
   );
 }

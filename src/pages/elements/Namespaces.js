@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Table } from 'patternfly-react';
+// Table formatters are no longer needed with new PatternFly
 import GrafanaUrl from './GrafanaUrl';
 import { sortByName } from '../../components/Utils';
 import TableSearch from '../../components/TableSearch';
@@ -12,8 +12,8 @@ function Namespaces({ namespaces, users }) {
   if (namespaces.length === 0) {
     return <p style={{ fontStyle: 'italic' }}>No namespaces.</p>;
   }
-  const headerFormat = value => <Table.Heading>{value}</Table.Heading>;
-  const cellFormat = value => <Table.Cell>{value}</Table.Cell>;
+  const headerFormat = value => value;
+  const cellFormat = value => value;
   const processedNamespaces = sortByName(namespaces.slice()).map(ns => {
     ns.name_path = [ns.name, ns.path];
     if (typeof ns.cluster !== 'undefined') {
