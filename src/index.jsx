@@ -1,14 +1,15 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { unregister } from './registerServiceWorker';
-import App from './App';
+import AppWrapper from './AppWrapper';
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
   <Router>
-    <App />
-  </Router>,
-  document.getElementById('root')
+    <AppWrapper />
+  </Router>
 );
 
 // unregister service worker
