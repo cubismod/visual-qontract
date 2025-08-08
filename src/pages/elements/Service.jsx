@@ -129,52 +129,30 @@ const SaasFilesV2 = ({ saas_files }) => {
     saasFilesTable = <p />;
   } else {
     saasFilesTable = (
-      <Table.PfProvider
-        striped
-        bordered
-        columns={[
-          {
-            header: {
-              label: 'Name',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [cellFormat]
-            },
-            property: 'name'
-          },
-          {
-            header: {
-              label: 'Link',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [
-                path => (
-                  <a href={`${window.DATA_DIR_URL}/${path}`} target="_blank" rel="noopener noreferrer">
-                    {path}
-                  </a>
-                ),
-                cellFormat
-              ]
-            },
-            property: 'path'
-          },
-          {
-            header: {
-              label: 'Pipeline Runs',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [path => <PipelineRuns saas_file={get_saas_file(path)} />, cellFormat]
-            },
-            property: 'path'
-          }
-        ]}
-      >
-        <Table.Header />
-        <Table.Body rows={saas_files} rowKey="path" />
-      </Table.PfProvider>
+      <Table aria-label="SaaS Files table" variant="compact">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Link</Th>
+            <Th>Pipeline Runs</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {saas_files.map((saasFile, index) => (
+            <Tr key={saasFile.path || index}>
+              <Td>{saasFile.name}</Td>
+              <Td>
+                <a href={`${window.DATA_DIR_URL}/${saasFile.path}`} target="_blank" rel="noopener noreferrer">
+                  {saasFile.path}
+                </a>
+              </Td>
+              <Td>
+                <PipelineRuns saas_file={get_saas_file(saasFile.path)} />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     );
   }
 
@@ -213,65 +191,40 @@ function Service({ service, reports, saas_files_v2, scorecards }) {
         return 0;
       });
     quayReposTable = (
-      <Table.PfProvider
-        striped
-        bordered
-        columns={[
-          {
-            header: {
-              label: 'Name',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [
-                v => (
-                  <a href={`https://quay.io/repository/${v}`} target="_blank" rel="noopener noreferrer">
-                    {v.split('/')[1]}
-                  </a>
-                ),
-                cellFormat
-              ]
-            },
-            property: 'repo_name'
-          },
-          {
-            header: {
-              label: 'Quay Org',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [linkFormat('https://quay.io/organization/'), cellFormat]
-            },
-            property: 'org_name'
-          },
-          {
-            header: {
-              label: 'Description',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [emptyFormat, cellFormat]
-            },
-            property: 'description'
-          },
-          {
-            header: {
-              label: 'Public',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [
-                booleanFormat(<Label color="green">Public</Label>, <Label color="red">Private</Label>),
-                cellFormat
-              ]
-            },
-            property: 'public'
-          }
-        ]}
-      >
-        <Table.Header />
-        <Table.Body rows={quayRepos} rowKey="id" />
-      </Table.PfProvider>
+      <Table aria-label="Quay Repositories table" variant="compact">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Quay Org</Th>
+            <Th>Description</Th>
+            <Th>Public</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {quayRepos.map((repo, index) => (
+            <Tr key={repo.id || index}>
+              <Td>
+                <a href={`https://quay.io/repository/${repo.repo_name}`} target="_blank" rel="noopener noreferrer">
+                  {repo.repo_name.split('/')[1]}
+                </a>
+              </Td>
+              <Td>
+                <a href={`https://quay.io/organization/${repo.org_name}`} target="_blank" rel="noopener noreferrer">
+                  {repo.org_name}
+                </a>
+              </Td>
+              <Td>{repo.description || '-'}</Td>
+              <Td>
+                {repo.public ? (
+                  <Label color="green">Public</Label>
+                ) : (
+                  <Label color="red">Private</Label>
+                )}
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     );
   }
   let dependenciesTable;
@@ -279,45 +232,32 @@ function Service({ service, reports, saas_files_v2, scorecards }) {
     dependenciesTable = <p style={{ fontStyle: 'italic' }}>No dependencies.</p>;
   } else {
     dependenciesTable = (
-      <Table.PfProvider
-        striped
-        bordered
-        columns={[
-          {
-            header: {
-              label: 'Name',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [cellFormat]
-            },
-            property: 'name'
-          },
-          {
-            header: {
-              label: 'Status Page',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [linkFormat(), cellFormat]
-            },
-            property: 'statusPage'
-          },
-          {
-            header: {
-              label: 'SLA',
-              formatters: [headerFormat]
-            },
-            cell: {
-              formatters: [cellFormat]
-            },
-            property: 'SLA'
-          }
-        ]}
-      >
-        <Table.Header />
-        <Table.Body rows={service.dependencies} rowKey="path" />
-      </Table.PfProvider>
+      <Table aria-label="Dependencies table" variant="compact">
+        <Thead>
+          <Tr>
+            <Th>Name</Th>
+            <Th>Status Page</Th>
+            <Th>SLA</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {service.dependencies.map((dependency, index) => (
+            <Tr key={dependency.path || index}>
+              <Td>{dependency.name}</Td>
+              <Td>
+                {dependency.statusPage ? (
+                  <a href={dependency.statusPage} target="_blank" rel="noopener noreferrer">
+                    {dependency.statusPage}
+                  </a>
+                ) : (
+                  '-'
+                )}
+              </Td>
+              <Td>{dependency.SLA}</Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
     );
   }
   const serviceOwners = service.serviceOwners.map(s => [
