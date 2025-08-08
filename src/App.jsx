@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Navigate, Routes } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import { IntrospectionFragmentMatcher, InMemoryCache } from 'apollo-cache-inmemory';
@@ -51,18 +50,25 @@ class App extends React.Component {
   };
 
   renderContent = () => {
+    const { location, history } = this.props;
     const allRoutes = [];
     this.menu.map((item, index) => {
-      allRoutes.push(<Route key={index} exact path={item.to} component={item.component} />);
+      const Component = item.component;
+      allRoutes.push(
+        <Route 
+          key={index} 
+          path={item.to} 
+          element={<Component location={location} history={history} />} 
+        />
+      );
       return allRoutes;
     });
 
     return (
-      <Switch>
+      <Routes>
         {allRoutes}
-        <Route component={NotFoundPage} />
-        <Redirect from="*" to="/" key="default-route" />
-      </Switch>
+        <Route path="*" element={<NotFoundPage location={location} history={history} />} />
+      </Routes>
     );
   };
 
@@ -138,4 +144,4 @@ App.propTypes = {
   location: PropTypes.object.isRequired
 };
 
-export default withRouter(App);
+export default App;

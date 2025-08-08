@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableHeader, TableBody, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@patternfly/react-table';
 import SearchBar from './SearchBar';
 
 function TableSearch({ filterText, changeFilterText, changeSelected, options, selected, columns, rows }) {

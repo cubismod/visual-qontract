@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OptionsMenuItem, OptionsMenu, OptionsMenuToggle, Grid, GridItem } from '@patternfly/react-core';
+import { Menu, MenuItem, MenuToggle, Grid, GridItem } from '@patternfly/react-core';
 
 function SearchBar({ filterText, handleFilterTextChange, handleSelect, options, selected }) {
   const [isOpen, toggle] = useState(false);
@@ -19,19 +19,21 @@ function SearchBar({ filterText, handleFilterTextChange, handleSelect, options, 
 
   if (options !== undefined) {
     const menuItems = options.map(i => (
-      <OptionsMenuItem onSelect={onSelect} isSelected={selected === i} id={i} key={i} className="optionsMenuItem">
+      <MenuItem onSelect={onSelect} isSelected={selected === i} itemId={i} key={i} className="optionsMenuItem">
         {i}
-      </OptionsMenuItem>
+      </MenuItem>
     ));
-    const menuToggle = <OptionsMenuToggle onToggle={onToggle} toggleTemplate={<>{selected}</>} />;
+    const menuToggle = <MenuToggle onClick={onToggle}>{selected}</MenuToggle>;
     optionsMenu = (
-      <OptionsMenu
+      <Menu
         id="options-menu"
-        menuItems={menuItems}
         isOpen={isOpen}
-        toggle={menuToggle}
+        onSelect={onSelect}
         className="optionsMenu"
-      />
+        toggle={menuToggle}
+      >
+        {menuItems}
+      </Menu>
     );
   } else {
     optionsMenu = '';

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Definition from '../../components/Definition';
 import GrafanaContainerVulnerabilities from '../../components/GrafanaContainerVulnerabilities';
 
-const yaml = require('js-yaml');
+import yaml from 'js-yaml';
 
 const headerFormat = value => value;
 const cellFormat = value => value;
